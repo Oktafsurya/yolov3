@@ -89,10 +89,6 @@ def test(
                     stats.append(([], torch.Tensor(), torch.Tensor(), tcls))
                 continue
 
-            # Append to text file
-            # with open('test.txt', 'a') as file:
-            #    [file.write('%11.5g' * 7 % tuple(x) + '\n') for x in pred]
-
             # Append to pycocotools JSON dictionary
             if save_json:
                 # [{"image_id": 42, "category_id": 18, "bbox": [258.15, 41.29, 348.26, 243.78], "score": 0.236}, ...
@@ -152,7 +148,7 @@ def test(
 
     # Print results
     pf = '%20s' + '%10.3g' * 6  # print format
-    print(pf % ('all', seen, nt.sum(), mp, mr, map, mf1))
+    print(pf % ('all', seen, nt.sum(), mp, mr, map, mf1), end='\n\n')
 
     # Print results per class
     if nc > 1 and len(stats):
@@ -180,7 +176,7 @@ def test(
         map = cocoEval.stats[1]  # update mAP to pycocotools mAP
 
     # Return results
-    maps = np.zeros(nc) + map
+    maps = np.zeros(nc)
     for i, c in enumerate(ap_class):
         maps[c] = ap[i]
     return (mp, mr, map, mf1, loss / len(dataloader)), maps
@@ -188,10 +184,10 @@ def test(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='test.py')
-    parser.add_argument('--batch-size', type=int, default=16, help='size of each image batch')
-    parser.add_argument('--cfg', type=str, default='cfg/yolov3-spp.cfg', help='cfg file path')
-    parser.add_argument('--data-cfg', type=str, default='data/coco.data', help='coco.data file path')
-    parser.add_argument('--weights', type=str, default='weights/yolov3-spp.weights', help='path to weights file')
+    parser.add_argument('--batch-size', type=int, default=4, help='size of each image batch')
+    parser.add_argument('--cfg', type=str, default='cfg/yolo_final_aug.cfg', help='cfg file path')
+    parser.add_argument('--data-cfg', type=str, default='data/custom.data', help='coco.data file path')
+    parser.add_argument('--weights', type=str, default='weights/yolo_final_aug.weights', help='path to weights file')
     parser.add_argument('--iou-thres', type=float, default=0.5, help='iou threshold required to qualify as detected')
     parser.add_argument('--conf-thres', type=float, default=0.001, help='object confidence threshold')
     parser.add_argument('--nms-thres', type=float, default=0.5, help='iou threshold for non-maximum suppression')

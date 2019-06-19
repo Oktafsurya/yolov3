@@ -16,7 +16,7 @@
 *.json
 
 *.cfg
-!cfg/yolov3*.cfg
+!cfg/yolo*.cfg
 
 data/*
 !data/samples/zidane.jpg
